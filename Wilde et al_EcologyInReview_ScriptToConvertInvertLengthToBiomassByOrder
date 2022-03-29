@@ -1,0 +1,94 @@
+# Script for processing invertebrate data[i,7]-dry mass calculations, dry mass is in mg, lengths are in mm
+#used Ganihar 1997, Rogers 1977, and Robinson et al. 2018 (supplementals)
+# created by Luke Wilde, on 05/03/2020
+
+#load the data
+data <- read.csv("C:/Users/14064/Dropbox/Chapter 2/Data/Input Files/daily_insect_v1.csv")
+#head(data)
+#data <- read.csv("C:/Users/14064/Dropbox/Chapter 2/Data/Input Files/daily_insect_v1.csv")
+
+#check the names in the dataset against those listed below
+levels(data$ORDER)
+
+#need to be all caps and format names as such:
+# "ACARI"                   "ANNELIDA"                "ARANEAE"                
+# "COLEOPTERA"              "COLEOPTERA LARVA"        "COLLEMBOLA"             
+# "DERMAPTERA"              "DERMAPTERA LARVA"        "DIPTERA"                
+# "DIPTERA LARVA"           "EMPTY"                   "HEMIPTERA"              
+# "HEMIPTERA LARVA"         "HYMENOPTERA"             "HYMENOPTERA/FORMICOIDEA"
+# "LEPIDOPTERA"             "LEPIDOPTERA LARVA"       "MOLLUSCA"               
+# "ODONATA"                 "ODONATA LARVA"           "ORTHOPTERA"             
+# "PLECOPTERA"              "UNKNOWN"          
+
+#define variable classes
+data$ORDER <- as.factor(data$ORDER)
+data$LENGTH <-as.numeric(data$LENGTH)
+
+quantile(data$LENGTH)
+
+
+
+
+y <- "initialize" #initialize, sometimes better as just 'list()'
+for(i in 1:nrow(data)){
+  if(data[i,6] == "ACARI"){
+    y[i] <- exp(3.682+(2.761*(log(data[i,7]))))/1000 #Rogers 1977, these are in micrograms!!
+  } else if(data[i,6] == "ANNELIDA"){
+    y[i] <- (10^(-1.69 + (1.66*(log10(data[i,7]))))) #McLaughlin et al. 2010
+  } else if(data[i,6] == "ARANEAE"){
+    y[i] <- exp(-3.106+(2.929*(log(data[i,7])))) # Ganihar 1997
+  } else if(data[i,6] == "COLEOPTERA" ){
+    y[i] <- exp(-3.460+(2.79*log(data[i,7]))) #Rogers 1977
+  } else if(data[i,6] == "COLEOPTERA LARVA"){
+    y[i] <- 10^(-1.43+(1.33*log(data[i,7]))) #Mclaughling 2010
+  } else if(data[i,6] == "COLLEMBOLA"){
+    y[i] <- abs(-1.875 + (data[i,7])^2.300) #Ganihar
+  } else if(data[i,6] == "DERMAPTERA"){
+    y[i] <- (-0.4524 + exp((0.2037*data[i,7]))) #Ganihar
+  } else if(data[i,6] == "DERMAPTERA LARVA"){
+    y[i] <- (-0.4524 + exp((0.2037*data[i,7]))) #Ganihar
+  } else if(data[i,6] == "DIPTERA"){
+    y[i] <- exp(-3.293+(2.366*(log(data[i,7])))) #rogers
+  } else if(data[i,6] == "DIPTERA LARVA"){
+    y[i] <- exp((-3.731)+(0.356*data[i,7])) #rogers
+  } else if(data[i,6] == "EMPTY"){
+    y[i] <- 0
+  } else if(data[i,6] == ""){
+    y[i] <- 0
+  } else if(data[i,6] == "UNKNOWN"){
+    y[i] <- 0
+  } else if(data[i,6] == "HEMIPTERA" ){
+    y[i] <- exp(-2.998+(2.27*(log(data[i,7])))) #rogers
+  } else if(data[i,6] == "HEMIPTERA LARVA"){
+    y[i] <- exp(-2.998+(2.27*(log(data[i,7])))) #rogers
+  } else if(data[i,6] == "HYMENOPTERA"){
+    y[i] <- exp(-3.871+(2.407*(log(data[i,7])))) #rogers
+  } else if(data[i,6] == "HYMENOPTERA/FORMICOIDEA"){
+    y[i] <- exp(-4.029+(2.572*(log(data[i,7])))) #rogers
+  } else if(data[i,6] == "LEPIDOPTERA"){
+    y[i] <- exp(-4.037+(2.903*(log(data[i,7])))) #rogers
+  } else if(data[i,6] == "LEPIDOPTERA LARVA"){
+    y[i] <- exp(-5.137+(2.809*(log(data[i,7])))) #rogers
+  } else if(data[i,6] == "MOLLUSCA"){
+    y[i] <- exp(0.969+(0.529*(log(data[i,7])))) # unknown
+  } else if(data[i,6] == "ODONATA"){
+    y[i] <- abs(0.0078*(data[i,7]^2.792)) #unknown
+  } else if(data[i,6] == "ODONATA LARVA"){
+    y[i] <- abs(0.0623*((data[i,7])^2.68)) #unknown
+  } else if(data[i,6] == "ORTHOPTERA"){
+    y[i] <- exp(-3.02+(2.515*(log(data[i,7])))) #rogers
+  } else if(data[i,6] == "PLECOPTERA"){
+    y[i] <- exp(-4.017+(2.720*(log(data[i,7])))) # Gruner et al 2003
+  }
+}
+y <- as.data.frame(y)
+head(y)
+
+
+#create output file
+write.csv(y, "C:/Users/14064/Dropbox/Chapter 2/Data/Output/daily_biomass_out.csv")
+
+
+#References
+# McLaughlin OB, Jonsson T, Emmerson MC (2010). Temporal variability in predator-prey relationships of a forest floor food web. Adv. Ecol. Res., 42, 171-264.
+#Gruner DS (2003). Regressions of length and width to predict arthropod biomass in the Hawaiian Islands. Pacific Science, 57, 325-336.
