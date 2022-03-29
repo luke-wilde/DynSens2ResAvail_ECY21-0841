@@ -24,6 +24,9 @@ Code file 2 description: We identified which factors influenced survival of Huds
 Code file 3 name: Wilde et al._EcologyInReview_OverlapMismatchModels_.R
 Code file 3 description: modelling mismatches from a single date may overlook changes to the demands of consumers. We developed a peak demand and whole demand model by adapting novel code to model overlap (peak only) shared by Eunbi Kwon (see Kwon et al. 2019). After entering the empirical data on invertebrate sampling and nest phenology, simulate metabolic demand from Hudsonian godwit chicks from hatch to pre-fledge (0-28 d).
 
+Code file 3 name: Wilde et al_EcologyInReview_ScriptToConvertInvertLengthToBiomassByOrder_.R
+Code file 3 description: Script for transforming measured body-lengths to order specific dry mass (biomass) for analyses. References are embedded.
+
 ##
 
 Code specfic information: Wilde et al._EcologyInReview_WAIC_.R
@@ -37,6 +40,9 @@ Code specific information: Wilde et al._EcologyInReview_JAGSmodel_BayesFactorsTo
 Code specific information: Wilde et al._EcologyInReview_OverlapModel_.R
 - Directions are embedded as comments. Requires that data be acquired from associated Dryad repository (DOI to follow)
 
+Code specific information: Wilde et al._EcologyInReview_Wilde et al_EcologyInReview_ScriptToConvertInvertLengthToBiomassByOrder_.R
+
+- Directions are embedded as comments. Requires that names match what is within the function.
 
 
 
