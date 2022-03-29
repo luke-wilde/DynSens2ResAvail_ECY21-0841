@@ -1,4 +1,4 @@
-# DynSens2ResAvail_ECY21-0841.R1
+# DynSens2ResAvail_ECY21-0841
 
 
 ##
